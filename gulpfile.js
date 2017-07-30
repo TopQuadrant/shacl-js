@@ -26,6 +26,33 @@ gulp.task('browserify', function () {
         });
 });
 
+
+gulp.task('nashorn', function () {
+    if (fs.existsSync('dist/index.js')) {
+        fs.unlinkSync('dist/index.js');
+    }
+    if (fs.existsSync('dist/shacl_nashorn.js')) {
+        fs.unlinkSync('dist/shacl_nashorn.js');
+    }
+
+    var postProcess = function () {
+        var nashornPreamble = fs.readFileSync('./src/nashorn.js').toString();
+        var generated = fs.readFileSync('dist/index.js').toString();
+        var postProcessed = nashornPreamble + generated + "\n SHACLValidator = this.SHACLValidator;";
+        fs.writeFileSync('dist/shacl_nashorn.js', postProcessed);
+    };
+
+    gulp.src('index.js')
+        .pipe(browserify({
+            standalone: 'SHACLValidator'
+        }))
+        .pipe(gulp.dest('dist'))
+        .on('end', function () {
+            postProcess();
+            fs.unlinkSync('dist/index.js');
+        });
+});
+
 gulp.task('generate-vocabularies', function () {
     var vocabularies = fs.readdirSync("./vocabularies");
     var acc = {};
