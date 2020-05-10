@@ -1,5 +1,10 @@
 # SHACL.js [![Build Status](https://travis-ci.org/TopQuadrant/shacl-js.svg?branch=master)](https://travis-ci.org/TopQuadrant/shacl-js)
 
+## Status
+
+This project is not really actively maintained anymore.
+For a more modern JavaScript implementation, see https://github.com/zazuko/rdf-validate-shacl
+
 ## Usage
 
 Create a new SHACL validator and load shapes and data to trigger the validation.
